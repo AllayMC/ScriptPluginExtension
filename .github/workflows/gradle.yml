@@ -44,11 +44,11 @@ jobs:
         run: ./gradlew shadowJar
       - name: Upload JavaScriptPluginExtension
         uses: actions/upload-artifact@v4
-        if: success() && contains(github.ref_name, 'master')
+        if: success() && contains(github.ref_name, 'main')
         with:
           path: javascript/build/libs/*.jar
       - name: Upload PythonPluginExtension
         uses: actions/upload-artifact@v4
-        if: success() && contains(github.ref_name, 'master')
+        if: success() && contains(github.ref_name, 'main')
         with:
           path: python/build/libs/*.jar
