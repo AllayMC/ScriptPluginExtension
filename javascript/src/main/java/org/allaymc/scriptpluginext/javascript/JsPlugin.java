@@ -1,7 +1,7 @@
 package org.allaymc.scriptpluginext.javascript;
 
 import lombok.SneakyThrows;
-import org.alaymc.scriptpluginext.common.ScriptPluginDescriptor;
+import org.allaymc.scriptpluginext.common.ScriptPluginDescriptor;
 import org.allaymc.api.plugin.Plugin;
 import org.allaymc.api.plugin.PluginContainer;
 import org.graalvm.polyglot.*;
