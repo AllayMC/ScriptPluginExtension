@@ -8,3 +8,7 @@ dependencies {
 //    api(group = "org.graalvm.truffle", name = "truffle-runtime", version = graalVersion)
 //    api(group = "org.graalvm.tools", name = "profiler-tool", version = graalVersion)
 }
+
+tasks.jar {
+    enabled = false
+}
