@@ -46,9 +46,11 @@ jobs:
         uses: actions/upload-artifact@v4
         if: success() && contains(github.ref_name, 'main')
         with:
+          name: JavaScriptPluginExtension
           path: javascript/build/libs/*.jar
       - name: Upload PythonPluginExtension
         uses: actions/upload-artifact@v4
         if: success() && contains(github.ref_name, 'main')
         with:
+          name: PythonPluginExtension
           path: python/build/libs/*.jar
