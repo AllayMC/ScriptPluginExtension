@@ -17,6 +17,7 @@ public class PyPlugin extends Plugin {
     @SneakyThrows
     @Override
     public void onLoad() {
+        // TODO: https://github.com/oracle/graalpython/blob/master/docs/user/Embedding-Build-Tools.md#deployment
         // ClassCastException won't happen
         var chromeDebugPort = ((ScriptPluginDescriptor) pluginContainer.descriptor()).getDebugPort();
         var cbd = Context.newBuilder("python")
