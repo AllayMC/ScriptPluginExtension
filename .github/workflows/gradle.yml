@@ -4,13 +4,13 @@ on:
   push:
     branches: [ "main" ]
     paths:
-      - .github/workflows/build.yml
+      - .github/workflows/gradle.yml
       - commmon/**
       - javascript/**
       - python/**
   pull_request:
     paths:
-      - .github/workflows/build.yml
+      - .github/workflows/gradle.yml
       - common/**
       - javascript/**
       - python/**
