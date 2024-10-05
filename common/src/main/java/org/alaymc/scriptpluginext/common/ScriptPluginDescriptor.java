@@ -1,4 +1,4 @@
-package org.allaymc.scriptpluginext.js;
+package org.alaymc.scriptpluginext.common;
 
 import lombok.Getter;
 import org.allaymc.server.plugin.SimplePluginDescriptor;
@@ -8,6 +8,6 @@ import org.allaymc.server.plugin.SimplePluginDescriptor;
  */
 @SuppressWarnings("FieldMayBeFinal")
 @Getter
-public class JsPluginDescriptor extends SimplePluginDescriptor {
+public class ScriptPluginDescriptor extends SimplePluginDescriptor {
     private int debugPort = -1;
 }

@@ -1,27 +1,21 @@
-package org.allaymc.scriptpluginext.js;
+package org.allaymc.scriptpluginext.javascript;
 
-import com.google.gson.reflect.TypeToken;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.alaymc.scriptpluginext.common.ScriptPluginDescriptor;
+import org.alaymc.scriptpluginext.common.ScriptPluginI18nLoader;
 import org.allaymc.api.i18n.I18n;
-import org.allaymc.api.i18n.LangCode;
 import org.allaymc.api.plugin.PluginContainer;
 import org.allaymc.api.plugin.PluginDescriptor;
 import org.allaymc.api.plugin.PluginException;
 import org.allaymc.api.plugin.PluginLoader;
 import org.allaymc.api.utils.JSONUtils;
 import org.allaymc.server.i18n.AllayI18n;
-import org.allaymc.server.i18n.I18nLoader;
 import org.allaymc.server.plugin.DefaultPluginSource;
 
-import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author daoge_cmd
@@ -41,7 +35,7 @@ public class JsPluginLoader implements PluginLoader {
     @SneakyThrows
     @Override
     public PluginDescriptor loadDescriptor() {
-        descriptor = JSONUtils.from(Files.newBufferedReader(pluginPath.resolve("plugin.json")), JsPluginDescriptor.class);
+        descriptor = JSONUtils.from(Files.newBufferedReader(pluginPath.resolve("plugin.json")), ScriptPluginDescriptor.class);
         PluginDescriptor.checkDescriptorValid(descriptor);
         return descriptor;
     }
@@ -54,7 +48,7 @@ public class JsPluginLoader implements PluginLoader {
         if (!Files.exists(entrancePath)) throw new PluginException("Entrance js file not found: " + entrancePath);
 
         // Load plugin's lang files
-        ((AllayI18n) I18n.get()).applyI18nLoader(new JsPluginI18nLoader());
+        ((AllayI18n) I18n.get()).applyI18nLoader(new ScriptPluginI18nLoader(pluginPath));
 
         return PluginContainer.createPluginContainer(
                 new JsPlugin(),
@@ -73,22 +67,6 @@ public class JsPluginLoader implements PluginLoader {
         @Override
         public PluginLoader create(Path pluginPath) {
             return new JsPluginLoader(pluginPath);
-        }
-    }
-
-    public class JsPluginI18nLoader implements I18nLoader {
-        @Override
-        public Map<String, String> getLangMap(LangCode langCode) {
-            try {
-                var str = Files.readString(pluginPath.resolve("lang").resolve(langCode.name() + ".json"));
-                TypeToken<HashMap<String, String>> typeToken = new TypeToken<>() {};
-                return JSONUtils.fromLenient(str, typeToken);
-            } catch (NoSuchFileException e) {
-                return Collections.emptyMap();
-            } catch (IOException e) {
-                log.error("Error while loading plugin language file", e);
-                return Collections.emptyMap();
-            }
         }
     }
 }
