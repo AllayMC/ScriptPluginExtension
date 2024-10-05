@@ -1,2 +1,2 @@
-rootProject.name = "JavaScriptPluginExtension"
+rootProject.name = "ScriptPluginExtension"
 

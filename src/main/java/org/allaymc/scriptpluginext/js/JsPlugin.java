@@ -1,4 +1,4 @@
-package org.allaymc.jspluginext;
+package org.allaymc.scriptpluginext.js;
 
 import lombok.SneakyThrows;
 import org.allaymc.api.plugin.Plugin;

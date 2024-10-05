@@ -1,4 +1,4 @@
-package org.allaymc.jspluginext;
+package org.allaymc.scriptpluginext.js;
 
 import org.graalvm.polyglot.Value;
 import org.graalvm.polyglot.proxy.ProxyArray;

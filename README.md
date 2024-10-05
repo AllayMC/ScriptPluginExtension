@@ -1,6 +1,6 @@
-# JavaScript Plugin Extension
+# Script Plugin Extension
 
-This extension make allay able to load javascript plugins.
+This extension make allay able to load script plugins (javascript, python).
 
 ## License
 

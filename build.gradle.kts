@@ -3,8 +3,8 @@ plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
-group = "org.allaymc.jspluginext"
-description = "JavaScript plugin extension for allay server"
+group = "org.allaymc.scriptpluginext"
+description = "Script plugin extension for allay server"
 version = "0.1.0"
 
 java {
