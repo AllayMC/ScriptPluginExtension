@@ -2,7 +2,7 @@ name: Build with Gradle
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "main" ]
     paths:
       - .github/workflows/build.yml
       - src/**
@@ -38,8 +38,13 @@ jobs:
           build-scan-terms-of-use-agree: "yes"
       - name: Build
         run: ./gradlew build
-      - name: Upload Artifact
+      - name: Upload JavaScriptPluginExtension
         uses: actions/upload-artifact@v4
         if: success() && contains(github.ref_name, 'master')
         with:
-          path: build/libs/*.jar
+          path: javascript/build/libs/*.jar
+      - name: Upload PythonPluginExtension
+        uses: actions/upload-artifact@v4
+        if: success() && contains(github.ref_name, 'master')
+        with:
+          path: python/build/libs/*.jar
