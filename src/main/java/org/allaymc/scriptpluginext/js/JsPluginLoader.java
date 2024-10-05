@@ -67,7 +67,7 @@ public class JsPluginLoader implements PluginLoader {
 
         @Override
         public boolean canLoad(Path pluginPath) {
-            return pluginPath.getFileName().toString().startsWith("@") && Files.isDirectory(pluginPath);
+            return pluginPath.getFileName().toString().endsWith(".js") && Files.isDirectory(pluginPath);
         }
 
         @Override
