@@ -6,7 +6,7 @@ import org.allaymc.server.plugin.AllayPluginManager;
 /**
  * @author daoge_cmd
  */
-public class JavaScriptPluginExtension extends Extension {
+public class JsPluginExtension extends Extension {
     @Override
     public void main(String[] args) {
         AllayPluginManager.registerLoaderFactory(new JsPluginLoader.JsPluginLoaderFactory());
