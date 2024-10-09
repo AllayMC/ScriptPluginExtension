@@ -1,5 +1,5 @@
 plugins {
-    id("com.gradleup.shadow") version "8.3.2"
+    id("java-library-distribution")
 }
 
 version = "0.2.0"
@@ -9,6 +9,8 @@ dependencies {
     implementation(libs.python)
 }
 
-tasks.shadowJar {
-    archiveFileName = "PythonPluginExtension-${version}-shaded.jar"
+distributions {
+    main {
+        distributionBaseName.set("PythonPluginExtension")
+    }
 }
