@@ -42,15 +42,9 @@ jobs:
           build-scan-terms-of-use-agree: "yes"
       - name: Build
         run: ./gradlew shadowJar
-      - name: Upload JavaScriptPluginExtension
+      - name: Upload ScriptPluginExtension
         uses: actions/upload-artifact@v4
         if: success() && contains(github.ref_name, 'main')
         with:
-          name: JavaScriptPluginExtension
-          path: javascript/build/distributions/*.zip
-      - name: Upload PythonPluginExtension
-        uses: actions/upload-artifact@v4
-        if: success() && contains(github.ref_name, 'main')
-        with:
-          name: PythonPluginExtension
-          path: python/build/distributions/*.zip
+          name: ScriptPluginExtension
+          path: build/distributions/*.zip

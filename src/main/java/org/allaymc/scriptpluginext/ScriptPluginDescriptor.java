@@ -1,4 +1,4 @@
-package org.allaymc.scriptpluginext.common;
+package org.allaymc.scriptpluginext;
 
 import lombok.Getter;
 import org.allaymc.server.plugin.SimplePluginDescriptor;

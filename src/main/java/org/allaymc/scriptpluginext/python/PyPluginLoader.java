@@ -1,10 +1,10 @@
-package org.allaymc.scriptpluginext.javascript;
+package org.allaymc.scriptpluginext.python;
 
 import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.allaymc.scriptpluginext.common.ScriptPluginDescriptor;
-import org.allaymc.scriptpluginext.common.ScriptPluginI18nLoader;
+import org.allaymc.scriptpluginext.ScriptPluginDescriptor;
+import org.allaymc.scriptpluginext.ScriptPluginI18nLoader;
 import org.allaymc.api.i18n.I18n;
 import org.allaymc.api.plugin.PluginContainer;
 import org.allaymc.api.plugin.PluginDescriptor;
@@ -21,14 +21,14 @@ import java.nio.file.Path;
  * @author daoge_cmd
  */
 @Slf4j
-public class JsPluginLoader implements PluginLoader {
+public class PyPluginLoader implements PluginLoader {
 
     @Getter
     protected Path pluginPath;
     protected PluginDescriptor descriptor;
 
     @SneakyThrows
-    public JsPluginLoader(Path pluginPath) {
+    public PyPluginLoader(Path pluginPath) {
         this.pluginPath = pluginPath;
     }
 
@@ -45,28 +45,28 @@ public class JsPluginLoader implements PluginLoader {
     public PluginContainer loadPlugin() {
         // Read entrance js file
         var entrancePath = pluginPath.resolve(descriptor.getEntrance());
-        if (!Files.exists(entrancePath)) throw new PluginException("Entrance js file not found: " + entrancePath);
+        if (!Files.exists(entrancePath)) throw new PluginException("Entrance py file not found: " + entrancePath);
 
         // Load plugin's lang files
         ((AllayI18n) I18n.get()).applyI18nLoader(new ScriptPluginI18nLoader(pluginPath));
 
         return PluginContainer.createPluginContainer(
-                new JsPlugin(),
+                new PyPlugin(),
                 descriptor, this,
                 DefaultPluginSource.getOrCreateDataFolder(descriptor.getName())
         );
     }
 
-    public static class JsPluginLoaderFactory implements PluginLoaderFactory {
+    public static class PyPluginLoaderFactory implements PluginLoaderFactory {
 
         @Override
         public boolean canLoad(Path pluginPath) {
-            return pluginPath.getFileName().toString().endsWith(".js") && Files.isDirectory(pluginPath);
+            return pluginPath.getFileName().toString().endsWith(".py") && Files.isDirectory(pluginPath);
         }
 
         @Override
         public PluginLoader create(Path pluginPath) {
-            return new JsPluginLoader(pluginPath);
+            return new PyPluginLoader(pluginPath);
         }
     }
 }

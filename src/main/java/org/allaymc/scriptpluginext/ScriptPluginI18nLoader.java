@@ -1,4 +1,4 @@
-package org.allaymc.scriptpluginext.common;
+package org.allaymc.scriptpluginext;
 
 import com.google.gson.reflect.TypeToken;
 import lombok.AllArgsConstructor;
