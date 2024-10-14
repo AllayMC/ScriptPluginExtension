@@ -5,15 +5,11 @@ on:
     branches: [ "main" ]
     paths:
       - .github/workflows/gradle.yml
-      - commmon/**
-      - javascript/**
-      - python/**
+      - src/**
   pull_request:
     paths:
       - .github/workflows/gradle.yml
-      - common/**
-      - javascript/**
-      - python/**
+      - src/**
 
 jobs:
   build:
