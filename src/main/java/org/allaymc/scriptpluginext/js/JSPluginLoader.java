@@ -3,16 +3,11 @@ package org.allaymc.scriptpluginext.js;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.allaymc.scriptpluginext.ScriptPluginDescriptor;
+import org.allaymc.api.plugin.*;
 import org.allaymc.scriptpluginext.ScriptPluginI18nLoader;
 import org.allaymc.api.i18n.I18n;
-import org.allaymc.api.plugin.PluginContainer;
-import org.allaymc.api.plugin.PluginDescriptor;
-import org.allaymc.api.plugin.PluginException;
-import org.allaymc.api.plugin.PluginLoader;
 import org.allaymc.api.utils.JSONUtils;
 import org.allaymc.server.i18n.AllayI18n;
-import org.allaymc.server.plugin.DefaultPluginSource;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -35,7 +30,7 @@ public class JSPluginLoader implements PluginLoader {
     @SneakyThrows
     @Override
     public PluginDescriptor loadDescriptor() {
-        descriptor = JSONUtils.from(Files.newBufferedReader(pluginPath.resolve("plugin.json")), ScriptPluginDescriptor.class);
+        this.descriptor = JSONUtils.from(Files.newBufferedReader(pluginPath.resolve("package.json")), PackageJson.class);
         PluginDescriptor.checkDescriptorValid(descriptor);
         return descriptor;
     }
@@ -53,7 +48,7 @@ public class JSPluginLoader implements PluginLoader {
         return PluginContainer.createPluginContainer(
                 new JSPlugin(),
                 descriptor, this,
-                DefaultPluginSource.getOrCreateDataFolder(descriptor.getName())
+                JSPluginSource.getOrCreateDataFolder(descriptor.getName())
         );
     }
 
@@ -61,7 +56,11 @@ public class JSPluginLoader implements PluginLoader {
 
         @Override
         public boolean canLoad(Path pluginPath) {
-            return pluginPath.getFileName().toString().endsWith(".js") && Files.isDirectory(pluginPath);
+            var packageJsonPath = pluginPath.resolve("package.json");
+            return pluginPath.getParent().endsWith(JSPluginSource.JS_PLUGIN_FOLDER) &&
+                   Files.isDirectory(pluginPath) &&
+                   Files.exists(packageJsonPath) &&
+                   Files.isRegularFile(packageJsonPath);
         }
 
         @Override
