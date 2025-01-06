@@ -1,5 +1,5 @@
 [versions]
-graalvm = "24.1.0"
+graalvm = "24.1.1"
 
 [libraries]
 # Allay
@@ -7,7 +7,6 @@ allay = { group = "org.allaymc.allay", name = "server", version = "master-SNAPSH
 # GraalVM
 polyglot = { group = "org.graalvm.polyglot", name = "polyglot", version.ref = "graalvm" }
 javascript = { group = "org.graalvm.polyglot", name = "js-community", version.ref = "graalvm" }
-python = { group = "org.graalvm.polyglot", name = "python-community", version.ref = "graalvm" }
 chromeinspector = { group = "org.graalvm.tools", name = "chromeinspector-tool", version.ref = "graalvm" }
 # Lombok
 lombok = { group = "org.projectlombok", name = "lombok", version = "1.18.34" }

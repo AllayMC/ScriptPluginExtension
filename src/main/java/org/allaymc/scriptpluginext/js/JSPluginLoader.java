@@ -1,4 +1,4 @@
-package org.allaymc.scriptpluginext.javascript;
+package org.allaymc.scriptpluginext.js;
 
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -21,14 +21,14 @@ import java.nio.file.Path;
  * @author daoge_cmd
  */
 @Slf4j
-public class JsPluginLoader implements PluginLoader {
+public class JSPluginLoader implements PluginLoader {
 
     @Getter
     protected Path pluginPath;
     protected PluginDescriptor descriptor;
 
     @SneakyThrows
-    public JsPluginLoader(Path pluginPath) {
+    public JSPluginLoader(Path pluginPath) {
         this.pluginPath = pluginPath;
     }
 
@@ -51,13 +51,13 @@ public class JsPluginLoader implements PluginLoader {
         ((AllayI18n) I18n.get()).applyI18nLoader(new ScriptPluginI18nLoader(pluginPath));
 
         return PluginContainer.createPluginContainer(
-                new JsPlugin(),
+                new JSPlugin(),
                 descriptor, this,
                 DefaultPluginSource.getOrCreateDataFolder(descriptor.getName())
         );
     }
 
-    public static class JsPluginLoaderFactory implements PluginLoaderFactory {
+    public static class JsPluginLoaderFactory implements PluginLoader.Factory {
 
         @Override
         public boolean canLoad(Path pluginPath) {
@@ -66,7 +66,7 @@ public class JsPluginLoader implements PluginLoader {
 
         @Override
         public PluginLoader create(Path pluginPath) {
-            return new JsPluginLoader(pluginPath);
+            return new JSPluginLoader(pluginPath);
         }
     }
 }

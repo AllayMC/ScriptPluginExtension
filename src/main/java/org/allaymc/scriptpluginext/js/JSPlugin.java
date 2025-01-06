@@ -1,34 +1,42 @@
-package org.allaymc.scriptpluginext.python;
+package org.allaymc.scriptpluginext.js;
 
 import lombok.SneakyThrows;
 import org.allaymc.scriptpluginext.ScriptPluginDescriptor;
 import org.allaymc.api.plugin.Plugin;
+import org.allaymc.api.plugin.PluginContainer;
 import org.graalvm.polyglot.*;
 import org.graalvm.polyglot.io.IOAccess;
 
 /**
  * @author daoge_cmd
  */
-public class PyPlugin extends Plugin {
+public class JSPlugin extends Plugin {
 
-    protected Context pyContext;
-    protected Value pyExport;
+    protected Context context;
+    protected Value export;
+    protected JSPluginProxyLogger proxyLogger;
+
+    @Override
+    public void setPluginContainer(PluginContainer pluginContainer) {
+        super.setPluginContainer(pluginContainer);
+        this.proxyLogger = new JSPluginProxyLogger(pluginLogger);
+    }
 
     @SneakyThrows
     @Override
     public void onLoad() {
-        // TODO: https://github.com/oracle/graalpython/blob/master/docs/user/Embedding-Build-Tools.md#deployment
         // ClassCastException won't happen
         var chromeDebugPort = ((ScriptPluginDescriptor) pluginContainer.descriptor()).getDebugPort();
-        var cbd = Context.newBuilder("python")
+        var cbd = Context.newBuilder("js")
                 .allowIO(IOAccess.ALL)
                 .allowAllAccess(true)
                 .allowHostAccess(HostAccess.ALL)
                 .allowHostClassLoading(true)
                 .allowHostClassLookup(className -> true)
-                .allowExperimentalOptions(true);
+                .allowExperimentalOptions(true)
+                .option("js.esm-eval-returns-exports", "true");
         if (chromeDebugPort > 0) {
-            pluginLogger.info("Debug mode for python plugin {} is enabled. Port: {}", pluginContainer.descriptor().getName(), chromeDebugPort);
+            pluginLogger.info("Debug mode for javascript plugin {} is enabled. Port: {}", pluginContainer.descriptor().getName(), chromeDebugPort);
             // Debug mode is enabled
             cbd.option("inspect", String.valueOf(chromeDebugPort))
                     .option("inspect.Path", pluginContainer.descriptor().getName())
@@ -36,27 +44,28 @@ public class PyPlugin extends Plugin {
                     .option("inspect.Internal", "true")
                     .option("inspect.SourcePath", pluginContainer.loader().getPluginPath().toFile().getAbsolutePath());
         }
-        pyContext = cbd.build();
+        context = cbd.build();
         initGlobalMembers();
-        var entrancePyFileName = pluginContainer.descriptor().getEntrance();
-        var path = pluginContainer.loader().getPluginPath().resolve(entrancePyFileName);
-        pyExport = pyContext.eval(
-                Source.newBuilder("python", path.toFile())
-                        .name(entrancePyFileName)
+        var entranceJsFileName = pluginContainer.descriptor().getEntrance();
+        var path = pluginContainer.loader().getPluginPath().resolve(entranceJsFileName);
+        export = context.eval(
+                Source.newBuilder("js", path.toFile())
+                        .name(entranceJsFileName)
+                        .mimeType("application/javascript+module")
                         .build()
         );
-        tryCallPyFunction("onLoad");
+        tryCallJsFunction("onLoad");
     }
 
     @Override
     public void onEnable() {
-        tryCallPyFunction("onEnable");
+        tryCallJsFunction("onEnable");
     }
 
     @Override
     public void onDisable() {
-        tryCallPyFunction("onDisable");
-        pyContext.close(true);
+        tryCallJsFunction("onDisable");
+        context.close(true);
     }
 
     @Override
@@ -72,12 +81,13 @@ public class PyPlugin extends Plugin {
     }
 
     protected void initGlobalMembers() {
-        var binding = pyContext.getBindings("python");
+        var binding = context.getBindings("js");
         binding.putMember("plugin", this);
+        binding.putMember("console", proxyLogger);
     }
 
-    protected void tryCallPyFunction(String functionName) {
-        var func = pyExport.getMember(functionName);
+    protected void tryCallJsFunction(String functionName) {
+        var func = export.getMember(functionName);
         if (func != null && func.canExecute()) {
             func.executeVoid();
         }

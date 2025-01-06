@@ -1,4 +1,4 @@
-package org.allaymc.scriptpluginext.javascript;
+package org.allaymc.scriptpluginext.js;
 
 import org.graalvm.polyglot.Value;
 import org.graalvm.polyglot.proxy.ProxyArray;
@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 /**
  * @author daoge_cmd
  */
-public final class JsPluginProxyLogger implements ProxyObject {
+public final class JSPluginProxyLogger implements ProxyObject {
     private static final Value NULL = Value.asValue(null);
 
     private final ProxyExecutable log;
@@ -17,7 +17,7 @@ public final class JsPluginProxyLogger implements ProxyObject {
     private final ProxyExecutable debug;
     private final ProxyExecutable error;
 
-    public JsPluginProxyLogger(Logger logger) {
+    public JSPluginProxyLogger(Logger logger) {
         this.log = arguments -> {
             logger.info(joinValues(arguments));
             return NULL;

@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "org.allaymc.scriptpluginext"
-version = "0.3.0"
+version = "0.4.0"
 
 java {
     toolchain {
@@ -14,7 +14,7 @@ java {
 
 repositories {
     mavenCentral()
-    maven("https://jitpack.io/")
+    maven("https://www.jitpack.io/")
     maven("https://repo.opencollab.dev/maven-releases/")
     maven("https://repo.opencollab.dev/maven-snapshots/")
     maven("https://storehouse.okaeri.eu/repository/maven-public/")
@@ -26,7 +26,6 @@ dependencies {
 
     implementation(libs.polyglot)
     implementation(libs.javascript)
-    implementation(libs.python)
     implementation(libs.chromeinspector)
 
     annotationProcessor(rootProject.libs.lombok)
